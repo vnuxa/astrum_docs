@@ -1,0 +1,494 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>astrum wiki</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Introduction</li><li class="chapter-item expanded "><a href="introduction/main.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="introduction/installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="introduction/first_widgets.html"><strong aria-hidden="true">1.2.</strong> First widgets</a></li><li class="chapter-item expanded "><a href="introduction/styling.html"><strong aria-hidden="true">1.3.</strong> Styling</a></li><li class="chapter-item expanded "><a href="introduction/subscriptions.html"><strong aria-hidden="true">1.4.</strong> Subscriptions</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded "><a href="subscriptions/main.html"><strong aria-hidden="true">2.</strong> Subscriptions</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="subscriptions/hyprland.html"><strong aria-hidden="true">2.1.</strong> Hyprland</a></li><li class="chapter-item expanded "><a href="subscriptions/mpris.html"><strong aria-hidden="true">2.2.</strong> Mpris</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">astrum wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p>astrum is a widgeting system that depends on <a href="https://github.com/pop-os/libcosmic">libcosmic</a>
+it can on any wayland compositor with the <code>layer-shell</code> protocol.</p>
+<p>astrum is made in rust and is configured in lua
+i reccomend using the <a href="https://github.com/LuaLS/lua-language-server">lua language server</a> as that is what i will depend on for types
+and i reccomend getting familiar with the annotation syntax as that is what i will show in documentation</p>
+<div style="break-before: page; page-break-before: always;"></div><p>since this project is still a work in progress,
+you have to build it from source.</p>
+<hr />
+<p>the <a href="https://github.com/vnuxa/astrum/blob/d270a71bd72846e0e01c6d0cab5afe685496e330/shell.nix">shell.nix</a> contains all of the dependencies needed</p>
+<p>if you use nixos you can just run</p>
+<pre><code>nix-shell
+cargo run
+</code></pre>
+<hr />
+<p>I also recommend having the <a href="https://github.com/LuaLS/lua-language-server">lua language server</a> installed in your text editor, since it contains astrum types and descriptions</p>
+<div style="break-before: page; page-break-before: always;"></div><p>Start by making <code>~/.config/astrum/config.lua</code></p>
+<pre><code class="language-lua">Astrum = require("astrum")
+App = Astrum:application()
+-- you can make windows with App:window()
+
+return App
+</code></pre>
+<p>You will see nothing happening if you run astrum, mainly because its an empty config<br />
+You have to make a window in order for astrum to display something</p>
+<hr />
+<h2 id="making-windows"><a class="header" href="#making-windows">Making windows</a></h2>
+<p>Windows are toplevel containers that hold widgets and signals (More on signals later).</p>
+<pre><code class="language-lua">App:window("window_name", {
+ -- window model goes here
+})
+</code></pre>
+<p><br />
+Windows have a mandatory <code>view</code> field, which defines what widgets to display<br />
+The <code>view</code> field gets ran after signals get processed.</p>
+<pre><code class="language-lua">App:window("window_name", {
+    view = function()
+         return Astrum.widgets:text("hello world!")
+    end
+})
+</code></pre>
+<p>This will display a window that has a text widget containing <code>"hello world!"</code></p>
+<hr />
+<h3 id="signals-and-states"><a class="header" href="#signals-and-states">Signals and states</a></h3>
+<p>Windows also have an optional <code>signals</code> field, which is a dictionary of signal names and logic that will be processed when the signal is fired</p>
+<pre><code class="language-lua">App:window("window_name", {
+    view = function()
+         return Astrum.widgets:button({
+             child = Astrum.widgets:text("press me!")
+             on_press = "button_pressed" -- the name of the signal
+         })
+    end,
+    -- the syntax for signals is this
+    -- signal_name = function(signal_data) end
+    signals = {
+        button_pressed = function() -- signal data is unnecessary since we do not send any yet
+            print("hello world!")
+        end
+    }
+})
+</code></pre>
+<p>This example will make a window, that has a button which when pressed will print <code>hello world!</code><br />
+<br />
+Signals are also the main way you change the state within astrum<br />
+And view logic is where you define widgets based on state</p>
+<pre><code class="language-lua">local state = {
+    widget_text = "false"
+}
+
+App:window("window_name", {
+    view = function()
+         return Astrum.widgets:button({
+             child = Astrum.widgets:text(state.widget_text)
+             on_press = "button_pressed"
+         })
+    end,
+
+    signals = {
+        button_pressed = function()
+            if state.widget_text == "false" then
+                state.widget_text = "true"
+            else
+                state.widget_text = "false"
+            end
+        end
+    }
+})
+</code></pre>
+<p>This will make a window that has a button with text that toggles between <code>false</code> and <code>true</code></p>
+<div style="break-before: page; page-break-before: always;"></div><p>Since astrum depends on <code>libcosmic</code>, styling is done within lua and not something like css</p>
+<hr />
+<h2 id="stylesheets"><a class="header" href="#stylesheets">Stylesheets</a></h2>
+<p>Although the styling is done within lua, there still are stylesheets</p>
+<pre><code class="language-lua">Astrum.style:add_style("style_name", {
+-- style body goes here
+})
+</code></pre>
+<p>Each widget has its own styling model, though if a widget has multiple styling states (for example buttons <code>on_pressed</code> and <code>on_hovered</code>) there is a <code>default</code> state as well, which overrides the base defaults, if not already specified</p>
+<p>You can use stylesheets within widgets via the <code>get_style</code> function</p>
+<pre><code class="language-lua">Astrum.widgets:text({
+    content = "hello world!",
+    style = Astrum.style:get_style("style_name")
+})
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><p>Subscriptions are the only way to update your state and view logic after an external event occurs.<br />
+Subscriptions will trigger <em>every</em> window's view and signal logic</p>
+<hr />
+<p>To use a subscription, you must subscribe to a specific service.<br />
+Here is a hyprland workspace changed subscription example:</p>
+<pre><code class="language-lua">local state = {
+    -- most services have types
+    ---@type HyprlandWorkspaces
+    workspaces = {}
+}
+-- Tells the application to subscribe to the `Hyprland` service, and to specifically use the `workspaces` signal
+App:subscribe("hyprland", {"workspaces"})
+
+App:window("workspace_example", {
+    view = function()
+        local row = Widgets:row({})
+
+        for _, workspace in pairs(state.workspaces) do
+            row:push(Widgets:text(tostring(workspace.id)))
+        end
+
+        return row
+    end,
+    signals = {
+        -- The `Hyprland` service sends this specific signal name when you subscribe to `workspaces`
+        hyprland_workspaces = function(signal_data)
+            state.workspaces = signal_data
+        end
+    }
+})
+
+</code></pre>
+<p>Each service has signals which you can subscribe to.<br />
+In this example, the <code>Hyprland</code> service sends <code>hyprland_workspaces</code> signal when you subscribe to the <code>workspaces</code> signal</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="subscriptions"><a class="header" href="#subscriptions">Subscriptions</a></h1>
+<p>Heres what to expect out of the syntax for subscription documentation,<br />
+The class that <code>signal_data</code> depends on will be outlied the first line like this <code>signal_data: className</code><br />
+and <code>className</code> will be defined later using lua language server annotation syntax.<br />
+For subscription functions (ex. <code>Subscriptions.hyprland:set_workspace(1)</code>), the annoation for it will be shown\</p>
+<p>Here are the documented services listed below.</p>
+<ul>
+<li><a href="subscriptions/hyprland.html"><code>Hyprland</code></a> --- Used primarily for getting workspaces from hyprland</li>
+<li><a href="subscriptions/mpris.html"><code>Mpris</code></a> --- Used primarily for getting track data from mpris and interracting with players</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="signals"><a class="header" href="#signals">Signals</a></h2>
+<h3 id="workspaces"><a class="header" href="#workspaces"><code>workspaces</code></a></h3>
+<p>Sends a <code>hyprland_workspaces</code> signal whenever a workspace gets changed in <code>Hyprland</code><br />
+with the following <code>signal_data</code>:</p>
+<pre><code class="language-lua">signal_data: HyprlandWorkspaces
+
+---@alias HyprlandWorkspaces HyprlandWorkspace[]
+
+---@class (exact) HyprlandWorkspace
+---@field id number
+---@field active boolean
+
+</code></pre>
+<hr />
+<h2 id="methods"><a class="header" href="#methods">Methods</a></h2>
+<h3 id="serviceshyprlandset_workspaceworkspace"><a class="header" href="#serviceshyprlandset_workspaceworkspace"><code>services.hyprland:set_workspace(workspace)</code></a></h3>
+<p>Sets the active workspace to the one specified within hyprland</p>
+<pre><code class="language-lua">---@param workspace number
+</code></pre>
+<h3 id="serviceshyprlandget_active_workspace"><a class="header" href="#serviceshyprlandget_active_workspace"><code>services.hyprland:get_active_workspace()</code></a></h3>
+<p>Gets the current active workspace id</p>
+<pre><code class="language-lua">---@return integer
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="signals-1"><a class="header" href="#signals-1">Signals</a></h2>
+<h3 id="playing"><a class="header" href="#playing"><code>playing</code></a></h3>
+<p>Sends a <code>mpris_playing</code> signal whenever a player started playing media<br />
+with the following <code>signal_data</code>:</p>
+<pre><code class="language-lua">signal_data: MprisOutput
+
+---@class (exact) MprisOutput
+---@field player string # The players name
+</code></pre>
+<h3 id="paused"><a class="header" href="#paused"><code>paused</code></a></h3>
+<p>Sends a <code>mpris_paused</code> signal whenever a player was paused<br />
+with the following <code>signal_data</code>:</p>
+<pre><code class="language-lua">signal_data: MprisOutput
+
+---@class (exact) MprisOutput
+---@field player string # The players name
+</code></pre>
+<h3 id="stopped"><a class="header" href="#stopped"><code>stopped</code></a></h3>
+<p>Sends a <code>mpris_stopped</code> signal whenever a player stopped<br />
+with the following <code>signal_data</code>:</p>
+<pre><code class="language-lua">signal_data: MprisOutput
+
+---@class (exact) MprisOutput
+---@field player string # The players name
+</code></pre>
+<h3 id="volume_changed"><a class="header" href="#volume_changed"><code>volume_changed</code></a></h3>
+<p>Sends a <code>mpris_volume_changed</code> signal whenever a players volume was changed, the new volume is provided<br />
+with the following <code>signal_data</code>:</p>
+<pre><code class="language-lua">signal_data: MprisVolumeChanged
+
+---@class (exact) MprisVolumeChanged
+---@field volume number
+---@field player string # The players name
+</code></pre>
+<h3 id="looping_changed"><a class="header" href="#looping_changed"><code>looping_changed</code></a></h3>
+<p>Sends a <code>mpris_looping_changed</code> signal whenever a players loop status was changed. New loop status is provided<br />
+with the following <code>signal_data</code>:</p>
+<pre><code class="language-lua">signal_data: MprisLoopingChanged
+
+---@class (exact) MprisLoopingChanged
+---@field player string # The players name
+---@field loop_status '"None"' | '"Track"' | '"Playlist"'
+
+</code></pre>
+<h3 id="shuffle_toggled"><a class="header" href="#shuffle_toggled"><code>shuffle_toggled</code></a></h3>
+<p>Sends a <code>mpris_shuffle_toggled</code> signal whenever a players shuffle status was changed. New shuffle status is provided<br />
+with the following <code>signal_data</code>:</p>
+<pre><code class="language-lua">signal_data: MprisShuffleToggled
+
+---@class (exact) MprisShuffleToggled
+---@field player string # The players name
+---@field shuffle boolean
+
+</code></pre>
+<h3 id="track_changed"><a class="header" href="#track_changed"><code>track_changed</code></a></h3>
+<p>Sends a <code>mpris_track_changed</code> signal whenever a players track was changed. Metadata of the new track is provided<br />
+with the following <code>signal_data</code>:</p>
+<pre><code class="language-lua">signal_data: MprisTrackChanged
+
+
+---@class (exact) MprisTrackChanged: MprisOutput
+---@field track TrackMetadata | { empty: boolean }
+
+---@class (exact) MprisOutput
+---@field player string # The players name
+
+---@class (exact) TrackMetadata
+---@field title string # The title of the song playing
+---@field album_name string # The album name of the song playing
+---@field album_artists string[] # List of artists of the song
+---@field length number # The length of the song in seconds
+
+</code></pre>
+<hr />
+<h2 id="methods-1"><a class="header" href="#methods-1">Methods</a></h2>
+<h3 id="servicesmprisget_playerplayer_name"><a class="header" href="#servicesmprisget_playerplayer_name"><code>services.mpris:get_player(player_name)</code></a></h3>
+<p>Gets a player by its name, allowing you to manage it</p>
+<pre><code class="language-lua">---@param player_name string
+---@return MprisPlayer
+</code></pre>
+<p>MprisPlayer functions are listed as <code>player</code> below</p>
+<h3 id="playerplay_pause"><a class="header" href="#playerplay_pause"><code>player:play_pause()</code></a></h3>
+<p>Sends a <code>play_pause</code> signal to the player</p>
+<h3 id="playernext"><a class="header" href="#playernext"><code>player:next()</code></a></h3>
+<p>Sends a <code>next</code> signal to the player</p>
+<h3 id="playerprevious"><a class="header" href="#playerprevious"><code>player:previous()</code></a></h3>
+<p>Sends a <code>previous</code> signal to the player</p>
+<h3 id="playerset_volumevolume"><a class="header" href="#playerset_volumevolume"><code>player:set_volume(volume)</code></a></h3>
+<p>Sets the volume of the player</p>
+<pre><code class="language-lua">---@param volume number
+</code></pre>
+<h3 id="playerset_loopstatus"><a class="header" href="#playerset_loopstatus"><code>player:set_loop(status)</code></a></h3>
+<p>Sets the looping of the player</p>
+<pre><code class="language-lua">---@param status '"Playlist"' | '"Track"' | '"None"'
+</code></pre>
+<h3 id="playerset_shuffleshuffle"><a class="header" href="#playerset_shuffleshuffle"><code>player:set_shuffle(shuffle)</code></a></h3>
+<p>Sets the shuffle of the player</p>
+<pre><code class="language-lua">---@param shuffle boolean
+</code></pre>
+<h3 id="playerget_volume"><a class="header" href="#playerget_volume"><code>player:get_volume()</code></a></h3>
+<p>Gets the volume of the player</p>
+<pre><code class="language-lua">---@return number
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>
